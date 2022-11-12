@@ -1,1 +1,1 @@
-console.log('test')
+const api: string = 'http://github.com/search/users?q='
