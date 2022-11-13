@@ -1,3 +1,4 @@
+// in progress
 import { fromEvent } from 'rxjs'
 
 import {
@@ -9,7 +10,7 @@ import {
   ctx
 } from './canvas'
 
-const bg = document.getElementById('bg')
+const bg = document.getElementById('bg')!
 const input$ = fromEvent(bg, 'input')
   .pipe(
     map(e => {
