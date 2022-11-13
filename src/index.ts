@@ -10,19 +10,13 @@ import {
 
 import {
   canvas,
-  ctx,
-  rect,
-  scale
+  ctx
 } from './ts/canvas'
 
 import {
   lineWidth$,
   strokeStyle$
 } from './ts/input'
-
-canvas.width = rect.width * scale
-canvas.height = rect.height * scale
-ctx.scale(scale, scale)
 
 
 type Coord = Array<{
@@ -59,12 +53,12 @@ const stream$ = mouseDown$
   )
 
 
-  stream$.subscribe(([from, to]: Coord) => {
-    const {lineWidth, strokeStyle} = from.options
-    ctx.lineWidth = Number(lineWidth)
-    ctx.strokeStyle = strokeStyle
-    ctx.beginPath()
-    ctx.moveTo(from.x, from.y)
-    ctx.lineTo(to.x, to.y)
-    ctx.stroke()
-  })
+stream$.subscribe(([from, to]: Coord) => {
+  const {lineWidth, strokeStyle} = from.options
+  ctx.lineWidth = Number(lineWidth)
+  ctx.strokeStyle = strokeStyle
+  ctx.beginPath()
+  ctx.moveTo(from.x, from.y)
+  ctx.lineTo(to.x, to.y)
+  ctx.stroke()
+})
