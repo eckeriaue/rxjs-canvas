@@ -16,8 +16,7 @@ const createInputSream = (node: HTMLInputElement) => {
   )
 }
 
-const lineWidth$ = createInputSream(range)
-const strokeStyle$ = createInputSream(color)
+const [lineWidth$, strokeStyle$] = [createInputSream(range), createInputSream(color)]
 
 export {
   lineWidth$,
