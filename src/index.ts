@@ -24,6 +24,8 @@ type Coord = Array<{x: number, y: number}>
 const mouseMove$ = fromEvent(canvas, 'mousemove')
 const mouseDown$ = fromEvent(canvas, 'mousedown')
 const mouseUp$ = fromEvent(canvas, 'mouseup')
+const mouseOut$ = fromEvent(canvas, 'mouseout')
+
 const stream$ = mouseDown$
   .pipe(
     switchMap(() => {
@@ -34,7 +36,8 @@ const stream$ = mouseDown$
           y: e.offsetY,
         })),
         pairwise(),
-        takeUntil(mouseUp$)
+        takeUntil(mouseUp$),
+        takeUntil(mouseOut$)
       )
     })
   )
