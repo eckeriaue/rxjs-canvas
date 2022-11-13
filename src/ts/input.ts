@@ -9,7 +9,7 @@ const range = document.getElementById('range') as HTMLInputElement
 const color = document.getElementById('color') as HTMLInputElement
 
 const createInputSream = (node: HTMLInputElement) => {
-  fromEvent(node, 'input')
+  return fromEvent(node, 'input')
   .pipe(
     map((e) => (e.target as HTMLInputElement).value),
     startWith(node.value)

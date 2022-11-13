@@ -29,7 +29,7 @@ type Coord = Array<{
   x: number
   y: number
   options?: {
-      lineWidth: string,
+      lineWidth: string
       strokeStyle: string
   }
 }>
