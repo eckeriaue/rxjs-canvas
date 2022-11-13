@@ -16,7 +16,8 @@ import {
 } from './ts/canvas'
 
 import {
-  lineWidth$
+  lineWidth$,
+  strokeStyle$
 } from './ts/input'
 
 canvas.width = rect.width * scale
@@ -28,7 +29,8 @@ type Coord = Array<{
   x: number
   y: number
   options?: {
-      lineWidth: string
+      lineWidth: string,
+      strokeStyle: string
   }
 }>
 const mouseMove$ = fromEvent(canvas, 'mousemove')
@@ -38,10 +40,8 @@ const mouseOut$ = fromEvent(canvas, 'mouseout')
 
 const stream$ = mouseDown$
   .pipe(
-    withLatestFrom(lineWidth$, (_, lineWidth) => {
-      return {
-        lineWidth
-      }
+    withLatestFrom(lineWidth$, strokeStyle$,(_, lineWidth, strokeStyle) => {
+      return { lineWidth, strokeStyle }
     }),
     switchMap((options) => {
       return mouseMove$
@@ -60,8 +60,9 @@ const stream$ = mouseDown$
 
 
   stream$.subscribe(([from, to]: Coord) => {
-    const {lineWidth} = from.options
+    const {lineWidth, strokeStyle} = from.options
     ctx.lineWidth = Number(lineWidth)
+    ctx.strokeStyle = strokeStyle
     ctx.beginPath()
     ctx.moveTo(from.x, from.y)
     ctx.lineTo(to.x, to.y)
