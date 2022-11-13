@@ -1,10 +1,12 @@
 {
+  "files": [ "./src/index.ts" ],
+  "exclude": [ "./src/ts/*" ],
   "compilerOptions": {
-    "outDir": "./dist/",
+    "outDir": "./js/*",
+    "rootDir": "./src",
     "noImplicitAny": true,
     "module": "es6",
     "target": "es5",
-    "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node"
   }
