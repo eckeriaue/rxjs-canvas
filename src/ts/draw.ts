@@ -19,8 +19,6 @@ import {
   strokeStyle$
 } from './input'
 
-
-
 type Coord = Array<{
   x: number
   y: number
