@@ -8,8 +8,7 @@ canvas.width = rect.width * scale
 canvas.height = rect.height * scale
 ctx.scale(scale, scale)
 
-
 export {
   canvas,
-  ctx,
+  ctx
 }
