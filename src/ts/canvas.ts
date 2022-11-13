@@ -11,5 +11,5 @@ ctx.scale(scale, scale)
 
 export {
   canvas,
-  ctx
+  ctx,
 }

@@ -18,8 +18,8 @@ import {
   strokeStyle$
 } from './ts/input'
 
-// import './ts/bg'
-
+import './ts/clear'
+ 
 type Coord = Array<{
   x: number
   y: number
