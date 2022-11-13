@@ -1,19 +1,48 @@
-import { fromEvent } from "rxjs"
-import { map, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators'
-import { ajax } from 'rxjs/ajax'
-import type { Observable } from "rxjs/internal/Observable"
+import { fromEvent } from 'rxjs'
 
-const api: string = 'http://github.com/search/users?q='
+import {
+  map,
+  pairwise,
+  switchMap,
+  takeUntil
+} from 'rxjs/operators'
 
-const search: HTMLElement = document.getElementById('search')
-const stream$: Observable<Event> = fromEvent(search, 'input')
+import {
+  canvas,
+  ctx,
+  rect,
+  scale
+} from './ts/canvas'
+
+
+canvas.width = rect.width * scale
+canvas.height = rect.height * scale
+ctx.scale(scale, scale)
+
+
+type Coord = Array<{x: number, y: number}>
+const mouseMove$ = fromEvent(canvas, 'mousemove')
+const mouseDown$ = fromEvent(canvas, 'mousedown')
+const mouseUp$ = fromEvent(canvas, 'mouseup')
+const stream$ = mouseDown$
   .pipe(
-    map( (e: any) => e.target.value ),
-    debounceTime(1000),
-    distinctUntilChanged(),
-    switchMap(v => ajax.getJSON(api + v))
+    switchMap(() => {
+      return mouseMove$
+      .pipe(
+        map((e: MouseEvent) => ({
+          x: e.offsetX,
+          y: e.offsetY,
+        })),
+        pairwise(),
+        takeUntil(mouseUp$)
+      )
+    })
   )
 
-stream$.subscribe(value => {
-  console.log(value)
-})
+
+  stream$.subscribe(([from, to]: Coord) => {
+    ctx.beginPath()
+    ctx.moveTo(from.x, from.y)
+    ctx.lineTo(to.x, to.y)
+    ctx.stroke()
+  })
