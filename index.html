@@ -8,8 +8,12 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="./js/bundle.js"></script>
 </head>
-<body class="bg-gradient-to-r from-cyan-600 to-blue-600">
-
+<body class="bg-gradient-to-r from-cyan-600 to-blue-600 overflow-auto">
   <canvas id="c" class="border border-slate-500 w-full bg-white"></canvas>
+  <div class="fixed top-0 left-0  p-4 shadow-lg rounded-md bg-whtie opacity-0 hover:opacity-100 
+    transition-opacity">
+    <input type="range" min="1" max="4" id="range">
+    <input type="color" id="color">
+  </div>
 </body>
 </html>

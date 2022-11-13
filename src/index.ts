@@ -4,7 +4,8 @@ import {
   map,
   pairwise,
   switchMap,
-  takeUntil
+  takeUntil,
+  withLatestFrom,
 } from 'rxjs/operators'
 
 import {
@@ -14,13 +15,22 @@ import {
   scale
 } from './ts/canvas'
 
+import {
+  lineWidth$
+} from './ts/input'
 
 canvas.width = rect.width * scale
 canvas.height = rect.height * scale
 ctx.scale(scale, scale)
 
 
-type Coord = Array<{x: number, y: number}>
+type Coord = Array<{
+  x: number
+  y: number
+  options?: {
+      lineWidth: string
+  }
+}>
 const mouseMove$ = fromEvent(canvas, 'mousemove')
 const mouseDown$ = fromEvent(canvas, 'mousedown')
 const mouseUp$ = fromEvent(canvas, 'mouseup')
@@ -28,12 +38,18 @@ const mouseOut$ = fromEvent(canvas, 'mouseout')
 
 const stream$ = mouseDown$
   .pipe(
-    switchMap(() => {
+    withLatestFrom(lineWidth$, (_, lineWidth) => {
+      return {
+        lineWidth
+      }
+    }),
+    switchMap((options) => {
       return mouseMove$
       .pipe(
         map((e: MouseEvent) => ({
           x: e.offsetX,
           y: e.offsetY,
+          options
         })),
         pairwise(),
         takeUntil(mouseUp$),
@@ -44,6 +60,8 @@ const stream$ = mouseDown$
 
 
   stream$.subscribe(([from, to]: Coord) => {
+    const {lineWidth} = from.options
+    ctx.lineWidth = Number(lineWidth)
     ctx.beginPath()
     ctx.moveTo(from.x, from.y)
     ctx.lineTo(to.x, to.y)
